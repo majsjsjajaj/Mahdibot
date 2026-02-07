@@ -1,21 +1,14 @@
+from telegram.ext import Application, MessageHandler, filters
 import os
-import asyncio
-from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
 
 TOKEN = os.getenv("TOKEN")
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    msg = await update.message.reply_text(
-        "👋 أهلاً بيك\nهذه رسالة مؤقتة وستُحذف بعد 15 ثانية."
-    )
-    await asyncio.sleep(15)
-    await msg.delete()
+async def get_id(update, context):
+    if update.message.video:
+        await update.message.reply_text(
+            f"FILE_ID:\n{update.message.video.file_id}"
+        )
 
-def main():
-    app = Application.builder().token(TOKEN).build()
-    app.add_handler(CommandHandler("start", start))
-    app.run_polling()
-
-if __name__ == "__main__":
-    main()
+app = Application.builder().token(TOKEN).build()
+app.add_handler(MessageHandler(filters.VIDEO, get_id))
+app.run_polling()
