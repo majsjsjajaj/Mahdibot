@@ -9,7 +9,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = await update.message.reply_text(
         "👋 أهلاً بيك\nهذه رسالة مؤقتة وستُحذف بعد 15 ثانية."
     )
-
     await asyncio.sleep(15)
     await msg.delete()
 
