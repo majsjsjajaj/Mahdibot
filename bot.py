@@ -1,17 +1,21 @@
 import os
 import asyncio
-from telegram import Update
-from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
+from telegram import Bot
 
 TOKEN = os.getenv("TOKEN")
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    msg = await update.message.reply_text("هلا بيك 👋\nهذا بوت تجريبي")
-    await asyncio.sleep(15)
-    await msg.delete()
+async def main():
+    bot = Bot(token=TOKEN)
 
-app = ApplicationBuilder().token(TOKEN).build()
-app.add_handler(CommandHandler("start", start))
+    # إرسال رسالة تأكيد إن البوت اشتغل
+    await bot.send_message(
+        chat_id=1003025142,
+        text="🤖 البوت اشتغل بنجاح على Railway!"
+    )
+
+    # خلي البوت شغال وما يطفي
+    while True:
+        await asyncio.sleep(60)
 
 if __name__ == "__main__":
-    app.run_polling()
+    asyncio.run(main())
